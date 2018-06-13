@@ -3,12 +3,58 @@
 <head>
 <meta charset="UTF-8">
 <title>Youhou!!!</title>
+<base href="/" />
+<link rel="stylesheet" type="text/css"
+	href="/webjars/bootstrap/css/bootstrap.min.css" />
+<script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
+<script type="text/javascript"
+	src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/webjars/js-cookie/js.cookie.js">
+$.ajaxSetup({
+    beforeSend : function(xhr, settings) {
+	 if (settings.type == 'POST' || settings.type == 'PUT'
+	     || settings.type == 'DELETE' || settings.type == 'GET' ) {
+	     if (!(/^http:.*/.test(settings.url) || /^https:.*/
+		   .test(settings.url))) {
+		 // Only send the token to relative URLs i.e. locally.
+		 xhr.setRequestHeader("X-XSRF-TOKEN", Cookies
+				      .get('XSRF-TOKEN'));
+		}
+	 }
+    }
+});
+</script>
 </head>
 <body>
+	<script type="text/javascript">
+		$.get("/user", function(data) {
+			$("#user").html(data.name);
+			$(".unauthenticated").hide();
+			$(".authenticated").show();
+		});
+	</script>
+
 	<div class="container unauthenticated">
 		<div>
 			Login with Github: <a href="/login">click here</a>
 		</div>
 	</div>
+	<div class="container authenticated" style="display: none">
+		Logged in as: <span id="user"></span>
+	</div>
+	<button onclick="logout()">Logout</button>
+
+	<script type="text/javascript">
+		var logout = function() {
+			$.post("/logout", function() {
+				$("#user").html('');
+				$(".unauthenticated").show();
+				$(".authenticated").hide();
+			})
+			return true;
+		}
+	</script>
+
 </body>
+
 </html>
