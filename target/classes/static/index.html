@@ -9,21 +9,7 @@
 <script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
 <script type="text/javascript"
 	src="/webjars/bootstrap/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="/webjars/js-cookie/js.cookie.js">
-$.ajaxSetup({
-    beforeSend : function(xhr, settings) {
-	 if (settings.type == 'POST' || settings.type == 'PUT'
-	     || settings.type == 'DELETE' || settings.type == 'GET' ) {
-	     if (!(/^http:.*/.test(settings.url) || /^https:.*/
-		   .test(settings.url))) {
-		 // Only send the token to relative URLs i.e. locally.
-		 xhr.setRequestHeader("X-XSRF-TOKEN", Cookies
-				      .get('XSRF-TOKEN'));
-		}
-	 }
-    }
-});
-</script>
+<script type="text/javascript" src="/webjars/js-cookie/js.cookie.js"></script>
 </head>
 <body>
 	<script type="text/javascript">
@@ -53,6 +39,21 @@ $.ajaxSetup({
 			})
 			return true;
 		}
+	</script>
+	<script type="text/javascript">
+		$.ajaxSetup({
+		    beforeSend : function(xhr, settings) {
+			 if (settings.type == 'POST' || settings.type == 'PUT'
+			     || settings.type == 'DELETE' || settings.type == 'GET' ) {
+			     if (!(/^http:.*/.test(settings.url) || /^https:.*/
+				   .test(settings.url))) {
+				 // Only send the token to relative URLs i.e. locally.
+				 xhr.setRequestHeader("X-XSRF-TOKEN", Cookies
+						      .get('XSRF-TOKEN'));
+				}
+			 }
+		    }
+		});
 	</script>
 
 </body>
